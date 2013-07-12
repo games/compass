@@ -7,6 +7,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:async';
 import 'package:vector_math/vector_math.dart';
+import 'package:stats/stats.dart';
 
 
 part 'src/geom/circle.dart';

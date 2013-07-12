@@ -11,14 +11,15 @@ class Director implements Dispose {
   Scene _scene;
   InteractionManager _interactionManager;
   num _lastElapsed;
+  Stats _stats;
   
-  static init(html.CanvasElement canvas) {
+  static init(html.CanvasElement canvas, [bool debug = false]) {
     if(director != null) 
       director.dispose();
-    director = new Director._internal(canvas);
+    director = new Director._internal(canvas, debug);
   }
   
-  Director._internal(html.CanvasElement canvas) {
+  Director._internal(html.CanvasElement canvas, bool debug) {
     juggler = new Juggler();
     width = canvas.width;
     height = canvas.height;
@@ -28,7 +29,8 @@ class Director implements Dispose {
     _renderer = new WebGLRenderer(canvas);
     _interactionManager = new InteractionManager(canvas);
     _scene = new Scene();
-   
+    if(debug) 
+      _stats = new Stats();
     _run();
   }
   
@@ -45,6 +47,9 @@ class Director implements Dispose {
   }
   
   _animate(num elapsed) {
+    if(_stats != null) 
+      _stats.begin();
+    
     final interval = elapsed - _lastElapsed;
     _lastElapsed = elapsed;
     
@@ -55,6 +60,9 @@ class Director implements Dispose {
     _scene.render(_renderer);
     _renderer.finishBatch();
     
+    if(_stats != null) 
+      _stats.end();
+    
     _run();
   }
 
@@ -63,4 +71,5 @@ class Director implements Dispose {
   }
   
   get scene => _scene;
+  get stats => _stats;
 }

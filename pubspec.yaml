@@ -6,4 +6,5 @@ homepage: http://valorzhong.blogspot.sg
 documentation: http://valorzhong.blogspot.sg
 dependencies:
   browser: any
+  stats: any
   vector_math: 1.3.1
