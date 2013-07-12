@@ -1,6 +1,6 @@
 import 'dart:html';
-import 'package:compass/compass.dart';
 import 'dart:math';
+import '../../lib/compass.dart';
 
 
 void main() {
