@@ -21,8 +21,7 @@ A 2D rendering engine that uses WebGL
     director.replace(new SimpleTest());
     
     class SimpleTest extends Scene {
-    
-    enter() {
+      enter() {
         var rng = new Random();
         for(var i = 0; i < 10000; i++) {
           var sprite = new Sprite();
@@ -33,6 +32,7 @@ A 2D rendering engine that uses WebGL
           sprite.y = rng.nextDouble() * director.height;
           addChild(sprite);
         }
+      }
     }
     
 ```
