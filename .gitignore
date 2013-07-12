@@ -1,5 +1,5 @@
 pubspec.lock
-packages/
+packages
 .project
 *.iml
 *.ipr
@@ -11,3 +11,4 @@ packages/
 *.js.map
 .buildlog
 web/out/*
+.DS_Store
