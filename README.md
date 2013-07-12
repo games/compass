@@ -13,7 +13,7 @@ A 2D rendering engine that uses WebGL
 
 ## Installing via Pub
 
-[Using](http://pub.dartlang.org/packages/compass)
+[Using http://pub.dartlang.org/packages/compass](http://pub.dartlang.org/packages/compass)
 
 	dependencies:
 	  compass: any
