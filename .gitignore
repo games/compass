@@ -12,3 +12,6 @@ packages
 .buildlog
 web/out/*
 .DS_Store
+
+
+.settings
