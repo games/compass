@@ -1,5 +1,5 @@
 import 'dart:html';
-import '../lib/compass.dart';
+import 'package:compass/compass.dart';
 
 
 void main() {
