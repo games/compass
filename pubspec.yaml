@@ -2,8 +2,8 @@ name: compass
 version: 0.0.1
 author: Valor Zhong <valorzhong@gmail.com>
 description: A 2D rendering engine that uses WebGL
-homepage: http://valorzhong.blogspot.sg
-documentation: http://valorzhong.blogspot.sg
+homepage: https://github.com/valorzhong/compass
+documentation: http://valorzhong.blogspot.com
 dependencies:
   browser: any
   stats: any
