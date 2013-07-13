@@ -21,6 +21,11 @@ class Layer extends InteractiveObject {
     }
   }
   
+  removeChildren() {
+    children.forEach((child) => child.parent = null);
+    children.clear();
+  }
+  
   render(Renderer renderer) {
     children.forEach((child) => child.render(renderer));
   }
