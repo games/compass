@@ -88,8 +88,4 @@ class InteractionManager {
             afterDispatchHandler: afterDispatchHandler));
     }
   }
-  
-  _touchStartHandler(html.TouchEvent e) {
-    
-  }
 }
