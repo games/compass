@@ -141,16 +141,16 @@ class RenderBatch implements Dispose {
     final webgl.RenderingContext gl = renderer.gl;
     verticies = new Float32List(_numSprites * 8);
     gl.bindBuffer(webgl.ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(webgl.ARRAY_BUFFER, verticies, webgl.DYNAMIC_DRAW);
+    gl.bufferDataTyped(webgl.ARRAY_BUFFER, verticies, webgl.DYNAMIC_DRAW);
     
     if(_fill is Color){
       colors = new Float32List(_numSprites * 16);
       gl.bindBuffer(webgl.ARRAY_BUFFER, colorBuffer);
-      gl.bufferData(webgl.ARRAY_BUFFER, colors, webgl.DYNAMIC_DRAW);
+      gl.bufferDataTyped(webgl.ARRAY_BUFFER, colors, webgl.DYNAMIC_DRAW);
     }else if(_fill is Image){
-      uvs  = new Float32List(_numSprites * 8);  
+      uvs  = new Float32List(_numSprites * 8);
       gl.bindBuffer(webgl.ARRAY_BUFFER, uvBuffer);
-      gl.bufferData(webgl.ARRAY_BUFFER, uvs, webgl.DYNAMIC_DRAW);
+      gl.bufferDataTyped(webgl.ARRAY_BUFFER, uvs, webgl.DYNAMIC_DRAW);
     }
     
     indices = new Uint16List(_numSprites * 6); 
@@ -165,7 +165,7 @@ class RenderBatch implements Dispose {
       indices[index2 + 5] = index3 + 3;
     };
     gl.bindBuffer(webgl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(webgl.ELEMENT_ARRAY_BUFFER, indices, webgl.STATIC_DRAW);
+    gl.bufferDataTyped(webgl.ELEMENT_ARRAY_BUFFER, indices, webgl.STATIC_DRAW);
   }
   
   render() {
@@ -184,13 +184,13 @@ class RenderBatch implements Dispose {
       program = renderer.getShaderProgram("color");
       gl.useProgram(program.program);
       gl.bindBuffer(webgl.ARRAY_BUFFER, colorBuffer);
-      gl.bufferSubData(webgl.ARRAY_BUFFER, 0, colors);
+      gl.bufferSubDataTyped(webgl.ARRAY_BUFFER, 0, colors);
       gl.vertexAttribPointer(program.colorAttribute, 4, webgl.FLOAT, false, 0, 0);
     }else if(_fill is Image){
       program = renderer.getShaderProgram("texture");
       gl.useProgram(program.program);
       gl.bindBuffer(webgl.ARRAY_BUFFER, uvBuffer);
-      gl.bufferSubData(webgl.ARRAY_BUFFER, 0, uvs);
+      gl.bufferSubDataTyped(webgl.ARRAY_BUFFER, 0, uvs);
       gl.vertexAttribPointer(program.textureCoordAttribute, 2, webgl.FLOAT, false, 0, 0);
       gl.activeTexture(webgl.TEXTURE0);
       gl.bindTexture(webgl.TEXTURE_2D, renderer.findTexture(_fill as Image));
@@ -198,7 +198,7 @@ class RenderBatch implements Dispose {
     }
 
     gl.bindBuffer(webgl.ARRAY_BUFFER, vertexBuffer);
-    gl.bufferSubData(webgl.ARRAY_BUFFER, 0, verticies);
+    gl.bufferSubDataTyped(webgl.ARRAY_BUFFER, 0, verticies);
     gl.vertexAttribPointer(program.vertexPositionAttribute, 2, webgl.FLOAT, false, 0, 0);
     
     gl.bindBuffer(webgl.ELEMENT_ARRAY_BUFFER, indexBuffer);
