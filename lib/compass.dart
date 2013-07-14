@@ -44,6 +44,7 @@ part 'src/director.dart';
 part 'src/dispose.dart';
 part 'src/state.dart';
 part 'src/interactionmanager.dart';
+part 'src/keyboard.dart';
 
 
 Director director;

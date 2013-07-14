@@ -10,6 +10,7 @@ class Director implements Dispose {
   Renderer _renderer;
   Scene _scene;
   InteractionManager _interactionManager;
+  Keyboard _keyboard;
   num _lastElapsed;
   Stats _stats;
   
@@ -28,6 +29,7 @@ class Director implements Dispose {
     _lastElapsed = 0;
     _renderer = new WebGLRenderer(canvas);
     _interactionManager = new InteractionManager(canvas);
+    _keyboard = new Keyboard();
     _scene = new Scene();
     if(debug) 
       _stats = new Stats();
@@ -70,6 +72,7 @@ class Director implements Dispose {
     // TODO implement this method
   }
   
+  get keyboard => _keyboard;
   get scene => _scene;
   get stats => _stats;
 }
