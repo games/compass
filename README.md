@@ -9,6 +9,7 @@ A 2D rendering engine that uses WebGL
 * Support for texture atlases
 * Asset loader / sprite sheet loade
 * Mouse interaction
+* Keyboard state
 
 
 ## Installing via Pub
@@ -55,9 +56,13 @@ class SimpleTest extends Scene {
 * [Cocos2d](http://cocos2d.org/)
 * [Pixi.js](https://github.com/GoodBoyDigital/pixi.js/)
 * [StageXL](http://www.stagexl.org/)
+* [stats](http://pub.dartlang.org/packages/stats)
+* [vector_math](http://pub.dartlang.org/packages/vector_math)
 
 
 ### About ###
 
 * [Blog](http://valorzhong.blogspot.com/)
+
+
  
