@@ -27,7 +27,6 @@ part 'src/fill/image.dart';
 part 'src/fill/textureatlas.dart';
 part 'src/fill/textureatlasframe.dart';
 
-part 'src/event/interactionmanager.dart';
 part 'src/event/eventdispatcher.dart';
 part 'src/event/events.dart';
 part 'src/event/eventsubscription.dart';
@@ -44,6 +43,7 @@ part 'src/animation/juggler.dart';
 part 'src/director.dart';
 part 'src/dispose.dart';
 part 'src/state.dart';
+part 'src/interactionmanager.dart';
 
 
 Director director;
