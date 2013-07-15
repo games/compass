@@ -6,6 +6,7 @@ class DisplayObject implements Dispose {
   double _x, _y, _width, _height, _pivotX, _pivotY, _skewX, _skewY, _scaleX, _scaleY, _rotation, _alpha;
   bool _dirty, visible, interactive;
   Matrix3 _localTransform, _worldTransform;
+  Rectangle _bounds;
   
   DisplayObject() {
     x = y = width = height = rotation = pivotX = pivotY = 0.0;
@@ -14,6 +15,7 @@ class DisplayObject implements Dispose {
     visible = interactive = true;
     _localTransform = new Matrix3.identity();
     _worldTransform = new Matrix3.identity();
+    _bounds = new Rectangle.zero();
   }
   
   removeFromParent() {
@@ -24,17 +26,18 @@ class DisplayObject implements Dispose {
     
   }
   
-  hitTest(Point point) => hitArea.containsPoint(point);
+  hitTestPoint(Point point) => bounds.containsPoint(point);
+  
+  hitTestRect(Rectangle rect) => bounds.intersects(rect);
 
   dispose() {
     // TODO implement this method
   }
   
-  get hitArea {
-    final transform = worldTransform;    
-    final wx = transform[2];
-    final wy = transform[5];
-    return new Rectangle(wx, wy, _width, _height);
+  Rectangle get bounds {
+    if(_dirty)
+      worldTransform;
+    return _bounds;
   }
   
   get worldTransform {
@@ -67,6 +70,8 @@ class DisplayObject implements Dispose {
       _worldTransform[3] = b10 * a00 + b11 * a10;
       _worldTransform[4] = b10 * a01 + b11 * a11;
       _worldTransform[5] = b10 * a02 + b11 * a12 + b12;
+
+      _bounds.setTo(_worldTransform[2], _worldTransform[5], _width, _height);
     }
     return _worldTransform;
   }
