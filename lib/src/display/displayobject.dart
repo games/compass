@@ -26,19 +26,17 @@ class DisplayObject implements Dispose {
     
   }
   
-  hitTest(Point point) => bounds.containsPoint(point);
+  hitTestPoint(Point point) => bounds.containsPoint(point);
+  
+  hitTestRect(Rectangle rect) => bounds.intersects(rect);
 
   dispose() {
     // TODO implement this method
   }
   
-  get bounds {
-    if(_dirty) {
-      final transform = worldTransform;    
-      final wx = transform[2];
-      final wy = transform[5];
-      _bounds.setTo(wx, wy, _width, _height);
-    }
+  Rectangle get bounds {
+    if(_dirty)
+      worldTransform;
     return _bounds;
   }
   
@@ -72,6 +70,8 @@ class DisplayObject implements Dispose {
       _worldTransform[3] = b10 * a00 + b11 * a10;
       _worldTransform[4] = b10 * a01 + b11 * a11;
       _worldTransform[5] = b10 * a02 + b11 * a12 + b12;
+
+      _bounds.setTo(_worldTransform[2], _worldTransform[5], _width, _height);
     }
     return _worldTransform;
   }

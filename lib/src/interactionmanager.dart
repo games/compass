@@ -71,7 +71,7 @@ class InteractionManager {
       final transform = object.worldTransform;
       final event = new MouseEvent(_global.x - transform[2], _global.y - transform[5], _global.x, _global.y);
       var hit = false;
-      if(object.hitTest(_global)) {
+      if(object.hitTestPoint(_global)) {
         hit = true;
         if(beforDispatchHandler != null)
           beforDispatchHandler(object, event);
