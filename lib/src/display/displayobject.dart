@@ -34,7 +34,7 @@ class DisplayObject implements Dispose {
     final transform = worldTransform;    
     final wx = transform[2];
     final wy = transform[5];
-    return new Rectangle(wx, wy, _width, _height);
+    return new Rectangle(wx - (_width * _pivotX), wy - (_height * _pivotY), _width, _height);
   }
   
   get worldTransform {
