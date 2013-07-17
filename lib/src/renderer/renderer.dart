@@ -76,7 +76,7 @@ class WebGLRenderer extends Renderer {
     webgl.Texture texture = gl.createTexture();
     gl.bindTexture(webgl.TEXTURE_2D, texture);
     gl.pixelStorei(webgl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
-    gl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, fill.imageData);
+    gl.texImage2DImage(webgl.TEXTURE_2D, 0, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, fill.imageData);
     gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MAG_FILTER, webgl.LINEAR);
     gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MIN_FILTER, webgl.LINEAR);
     gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.REPEAT);
