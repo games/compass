@@ -26,15 +26,15 @@ class DisplayObject implements Dispose {
     
   }
   
-  hitTestPoint(Point point) => hitArea.containsPoint(point);
+  hitTestPoint(Point point) => bounds.containsPoint(point);
   
-  hitTestRect(Rectangle rect) => hitArea.intersects(rect);
+  hitTestRect(Rectangle rect) => bounds.intersects(rect);
 
   dispose() {
     // TODO implement this method
   }
   
-  get hitArea {
+  get bounds {
     _updateTransform();
     return _bounds;
   }
