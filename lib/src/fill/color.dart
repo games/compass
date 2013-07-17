@@ -173,4 +173,8 @@ class Color extends Fill {
     var rng = new math.Random();
     return new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
   }
+
+  updateTexture(renderer) {}
+  findTexture(renderer) {}
+  updateBuffer(pos, buffer) {}
 }

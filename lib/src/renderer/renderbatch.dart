@@ -115,26 +115,8 @@ class RenderBatch implements Dispose {
         colors[colorIndex + i + 3] = color.alpha;
         colorIndex += 3;
       }
-    } else if(_fill is Image) {
-      var img = _fill as Image;
-      var tw = img.width;
-      var th = img.height;
-      var right = img.frameX + img.frameWidth;
-      var bottom = img.frameY + img.frameHeight;
-      
-      uvs[index + 0] = img.frameX / tw;
-      uvs[index + 1] = img.frameY / th;
-      
-      uvs[index + 2] = right / tw;
-      uvs[index + 3] = img.frameY / th;
-     
-      uvs[index + 4] = right / tw;
-      uvs[index + 5] = bottom / th;
-      
-      uvs[index + 6] = img.frameX / tw;
-      uvs[index + 7] = bottom / th;
-      
-//      print(uvs);
+    } else {
+      _fill.updateBuffer(index, uvs);
     }
   }
   
@@ -148,7 +130,7 @@ class RenderBatch implements Dispose {
       colors = new Float32List(_numSprites * 16);
       gl.bindBuffer(webgl.ARRAY_BUFFER, colorBuffer);
       gl.bufferDataTyped(webgl.ARRAY_BUFFER, colors, webgl.DYNAMIC_DRAW);
-    }else if(_fill is Image){
+    }else {
       uvs  = new Float32List(_numSprites * 8);
       gl.bindBuffer(webgl.ARRAY_BUFFER, uvBuffer);
       gl.bufferDataTyped(webgl.ARRAY_BUFFER, uvs, webgl.DYNAMIC_DRAW);
@@ -187,14 +169,14 @@ class RenderBatch implements Dispose {
       gl.bindBuffer(webgl.ARRAY_BUFFER, colorBuffer);
       gl.bufferSubDataTyped(webgl.ARRAY_BUFFER, 0, colors);
       gl.vertexAttribPointer(program.colorAttribute, 4, webgl.FLOAT, false, 0, 0);
-    }else if(_fill is Image){
+    }else {
       program = renderer.getShaderProgram("texture");
       gl.useProgram(program.program);
       gl.bindBuffer(webgl.ARRAY_BUFFER, uvBuffer);
       gl.bufferSubDataTyped(webgl.ARRAY_BUFFER, 0, uvs);
       gl.vertexAttribPointer(program.textureCoordAttribute, 2, webgl.FLOAT, false, 0, 0);
       gl.activeTexture(webgl.TEXTURE0);
-      gl.bindTexture(webgl.TEXTURE_2D, renderer.findTexture(_fill as Image));
+      gl.bindTexture(webgl.TEXTURE_2D, _fill.findTexture(renderer));
       gl.uniform1i(program.samplerUniform, 0);
     }
 

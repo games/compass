@@ -12,7 +12,7 @@ abstract class Renderer implements Dispose{
 }
 
 class WebGLRenderer extends Renderer {
-  final Map<html.ImageElement, webgl.Texture> _texturesCache = new Map<html.ImageElement, webgl.Texture>();
+  final Map _texturesCache = new Map();
   final Map<String, ShaderProgram> _programsCache = new Map<String, ShaderProgram>();
   webgl.RenderingContext gl;
   List<RenderBatch> _batchs;
@@ -52,37 +52,43 @@ class WebGLRenderer extends Renderer {
   }
   
   render(Sprite sprite) {
-    if(sprite.fill is Image){
-      loadTexture(sprite.fill as Image);
-    }
+    sprite.fill.updateTexture(this);
     if(_batchs[_currentBatchIndex].isStateChanged(sprite)){
       finishBatch();
     }
     _batchs[_currentBatchIndex].add(sprite);
   }
   
-  loadTexture(Image fill) {
-    if(!_texturesCache.containsKey(fill.imageData)){
-      _handleTexture(fill);
-    }
-  }
-  
-  findTexture(Image fill) {
-    return _texturesCache[fill.imageData];
-  }
+  findTexture(key) => _texturesCache[key];
 
-  _handleTexture(Image fill) {
-    print('upload texture $fill');
+  cacheTexture(key, texture) => _texturesCache[key] = texture;
+  
+  removeTexture(key) => _texturesCache.remove(key);
+  
+  createImageTexure(imageData) {
     webgl.Texture texture = gl.createTexture();
     gl.bindTexture(webgl.TEXTURE_2D, texture);
     gl.pixelStorei(webgl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
-    gl.texImage2DImage(webgl.TEXTURE_2D, 0, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, fill.imageData);
+    gl.texImage2DImage(webgl.TEXTURE_2D, 0, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, imageData);
     gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MAG_FILTER, webgl.LINEAR);
     gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MIN_FILTER, webgl.LINEAR);
     gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.REPEAT);
     gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.REPEAT);
     gl.bindTexture(webgl.TEXTURE_2D, null);
-    _texturesCache[fill.imageData] = texture;
+    return texture;
+  }
+  
+  createCanvasTexure(canvas) {
+    webgl.Texture texture = gl.createTexture();
+    gl.bindTexture(webgl.TEXTURE_2D, texture);
+    gl.pixelStorei(webgl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
+    gl.texImage2DCanvas(webgl.TEXTURE_2D, 0, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, canvas);
+    gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MAG_FILTER, webgl.LINEAR);
+    gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MIN_FILTER, webgl.LINEAR);
+    gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.REPEAT);
+    gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.REPEAT);
+    gl.bindTexture(webgl.TEXTURE_2D, null);
+    return texture;
   }
   
   finishBatch() {
