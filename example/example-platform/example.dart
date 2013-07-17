@@ -77,7 +77,7 @@ class SimpleTest extends Scene {
     if(_hero.y >= 0) {
       var pos = new Point(_hero.view.x + _hero.view.width / 2, _hero.view.y + _hero.view.height + _hero.y);
       var hit = _platforms.any((Sprite platform) {
-        if(platform.hitTest(pos) && _hero.view.y + _hero.view.height <= platform.y) {
+        if(platform.hitTestPoint(pos) && _hero.view.y + _hero.view.height <= platform.y) {
           _hero.y = 0;
           _hero.view.y = platform.y - platform.height;
           _hero.isJumping = false; 
@@ -112,6 +112,8 @@ class Hero {
     view.y += y;
   }
 }
+
+
 
 
 
