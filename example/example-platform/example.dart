@@ -61,9 +61,9 @@ class SimpleTest extends Scene {
   }
   
   advanceTime(num time) {
-    if(director.keyboard.isDown(html.KeyCode.LEFT)) {
+    if(director.keyboard.held(html.KeyCode.LEFT)) {
       _hero.x = -Speed;
-    } else if(director.keyboard.isDown(html.KeyCode.RIGHT)) {
+    } else if(director.keyboard.held(html.KeyCode.RIGHT)) {
       _hero.x = Speed;
     } else {
       _hero.x = 0;
@@ -91,7 +91,7 @@ class SimpleTest extends Scene {
       }
     }
     
-    if(director.keyboard.isDown(html.KeyCode.UP)) {
+    if(director.keyboard.pressed(html.KeyCode.UP)) {
       if(!_hero.isJumping) {
         _hero.y = -JumpSpeed;
         _hero.isJumping = true;

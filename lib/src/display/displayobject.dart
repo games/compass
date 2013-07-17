@@ -26,22 +26,16 @@ class DisplayObject implements Dispose {
     
   }
   
-  hitTestPoint(Point point) => bounds.containsPoint(point);
+  hitTestPoint(Point point) => hitArea.containsPoint(point);
   
-  hitTestRect(Rectangle rect) => bounds.intersects(rect);
+  hitTestRect(Rectangle rect) => hitArea.intersects(rect);
 
   dispose() {
     // TODO implement this method
   }
   
-<<<<<<< HEAD
-  Rectangle get bounds {
-    if(_dirty)
-      worldTransform;
-=======
   get hitArea {
     _updateTransform();
->>>>>>> 745fda8b97e7afcef6fde52fad3bc950ec2d8835
     return _bounds;
   }
   
@@ -78,16 +72,11 @@ class DisplayObject implements Dispose {
       _worldTransform[3] = b10 * a00 + b11 * a10;
       _worldTransform[4] = b10 * a01 + b11 * a11;
       _worldTransform[5] = b10 * a02 + b11 * a12 + b12;
-<<<<<<< HEAD
 
-      _bounds.setTo(_worldTransform[2], _worldTransform[5], _width, _height);
-=======
-      
       _bounds.setTo(
           _worldTransform[2] - (_width * _pivotX),
           _worldTransform[5] - (_height * _pivotY),
           _width, _height);
->>>>>>> 745fda8b97e7afcef6fde52fad3bc950ec2d8835
     }
   }
   
