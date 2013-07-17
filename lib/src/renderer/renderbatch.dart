@@ -169,7 +169,7 @@ class RenderBatch implements Dispose {
       gl.bindBuffer(webgl.ARRAY_BUFFER, colorBuffer);
       gl.bufferSubDataTyped(webgl.ARRAY_BUFFER, 0, colors);
       gl.vertexAttribPointer(program.colorAttribute, 4, webgl.FLOAT, false, 0, 0);
-    }else {
+    } else {
       program = renderer.getShaderProgram("texture");
       gl.useProgram(program.program);
       gl.bindBuffer(webgl.ARRAY_BUFFER, uvBuffer);
