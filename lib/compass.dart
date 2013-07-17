@@ -23,7 +23,6 @@ part 'src/display/scene.dart';
 part 'src/fill/fill.dart';
 part 'src/fill/color.dart';
 part 'src/fill/image.dart';
-part 'src/fill/text.dart';
 part 'src/fill/textureatlas.dart';
 part 'src/fill/textureatlasframe.dart';
 

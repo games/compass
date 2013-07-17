@@ -39,7 +39,7 @@ class Keyboard implements Animatable {
   bool pressedByName(name) {
     if(!_control.containsKey(name))
       return false;
-    return _control[name].every((k) => _pressKeys.contains(k));
+    return _control[name].any((k) => _pressKeys.contains(k));
   }
   
   bool released(key) => _releaseKeys.contains(key);
@@ -47,13 +47,13 @@ class Keyboard implements Animatable {
   bool releasedByName(name) {
     if(!_control.containsKey(name))
       return false;
-    return _control[name].every((k) => _releaseKeys.contains(k));
+    return _control[name].any((k) => _releaseKeys.contains(k));
   }
   
   bool heldByName(name) {
     if(!_control.containsKey(name))
       return false;
-    return _control[name].every((k) => _keysState.contains(k));
+    return _control[name].any((k) => _keysState.contains(k));
   }
   
   bool held(key) => _keysState.contains(key);

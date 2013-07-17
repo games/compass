@@ -11,9 +11,6 @@ class Sprite extends InteractiveObject {
     _fill = val;
     if(val is Image) {
       _handleImage(val);
-    }else if(val is Text) {
-      _width = val.width.toDouble();
-      _height = val.height.toDouble();
     }
   }
   
