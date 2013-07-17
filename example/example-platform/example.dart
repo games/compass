@@ -61,9 +61,9 @@ class SimpleTest extends Scene {
   }
   
   advanceTime(num time) {
-    if(director.keyboard.isDown(html.KeyCode.LEFT)) {
+    if(director.keyboard.held(html.KeyCode.LEFT)) {
       _hero.x = -Speed;
-    } else if(director.keyboard.isDown(html.KeyCode.RIGHT)) {
+    } else if(director.keyboard.held(html.KeyCode.RIGHT)) {
       _hero.x = Speed;
     } else {
       _hero.x = 0;
@@ -77,7 +77,7 @@ class SimpleTest extends Scene {
     if(_hero.y >= 0) {
       var pos = new Point(_hero.view.x + _hero.view.width / 2, _hero.view.y + _hero.view.height + _hero.y);
       var hit = _platforms.any((Sprite platform) {
-        if(platform.hitTest(pos) && _hero.view.y + _hero.view.height <= platform.y) {
+        if(platform.hitTestPoint(pos) && _hero.view.y + _hero.view.height <= platform.y) {
           _hero.y = 0;
           _hero.view.y = platform.y - platform.height;
           _hero.isJumping = false; 
@@ -91,7 +91,7 @@ class SimpleTest extends Scene {
       }
     }
     
-    if(director.keyboard.isDown(html.KeyCode.UP)) {
+    if(director.keyboard.pressed(html.KeyCode.UP)) {
       if(!_hero.isJumping) {
         _hero.y = -JumpSpeed;
         _hero.isJumping = true;
@@ -112,6 +112,8 @@ class Hero {
     view.y += y;
   }
 }
+
+
 
 
 
