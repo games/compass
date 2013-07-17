@@ -49,6 +49,7 @@ class RenderBatch implements Dispose {
   }
   
   add(Sprite sprite) {
+    if(sprite.fill == null) return;
     if(_numSprites == 0) _fill = sprite.fill;
     _sprites.add(sprite);
     _numSprites++;
