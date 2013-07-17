@@ -34,18 +34,28 @@ class DisplayObject implements Dispose {
     // TODO implement this method
   }
   
+<<<<<<< HEAD
   Rectangle get bounds {
     if(_dirty)
       worldTransform;
+=======
+  get hitArea {
+    _updateTransform();
+>>>>>>> 745fda8b97e7afcef6fde52fad3bc950ec2d8835
     return _bounds;
   }
   
   get worldTransform {
+    _updateTransform();
+    return _worldTransform;
+  }
+  
+  _updateTransform() {
     if(_dirty) {
       _dirty = false;
       
-      var sr = math.sin(_rotation);
-      var cr = math.cos(_rotation);
+      final sr = math.sin(_rotation);
+      final cr = math.cos(_rotation);
       
       final Matrix3 parentTransform = parent != null ? parent.worldTransform : new Matrix3.identity();
       
@@ -53,27 +63,32 @@ class DisplayObject implements Dispose {
       _localTransform[1] = -sr * _scaleY;
       _localTransform[3] = sr * _scaleX;
       _localTransform[4] = cr * _scaleY;
-
+  
       _localTransform[2] = _x - _localTransform[0] * _pivotX - _pivotY * _localTransform[1];
       _localTransform[5] = _y - _localTransform[4] * _pivotY - _pivotX * _localTransform[3];
       
-      var a00 = _localTransform[0], a01 = _localTransform[1], a02 = _localTransform[2],
+      final a00 = _localTransform[0], a01 = _localTransform[1], a02 = _localTransform[2],
           a10 = _localTransform[3], a11 = _localTransform[4], a12 = _localTransform[5],
-
           b00 = parentTransform[0], b01 = parentTransform[1], b02 = parentTransform[2],
           b10 = parentTransform[3], b11 = parentTransform[4], b12 = parentTransform[5];
-
+  
       _worldTransform[0] = b00 * a00 + b01 * a10;
       _worldTransform[1] = b00 * a01 + b01 * a11;
       _worldTransform[2] = b00 * a02 + b01 * a12 + b02;
-
       _worldTransform[3] = b10 * a00 + b11 * a10;
       _worldTransform[4] = b10 * a01 + b11 * a11;
       _worldTransform[5] = b10 * a02 + b11 * a12 + b12;
+<<<<<<< HEAD
 
       _bounds.setTo(_worldTransform[2], _worldTransform[5], _width, _height);
+=======
+      
+      _bounds.setTo(
+          _worldTransform[2] - (_width * _pivotX),
+          _worldTransform[5] - (_height * _pivotY),
+          _width, _height);
+>>>>>>> 745fda8b97e7afcef6fde52fad3bc950ec2d8835
     }
-    return _worldTransform;
   }
   
   get x => _x;

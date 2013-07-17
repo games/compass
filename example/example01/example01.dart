@@ -27,6 +27,11 @@ class SimpleTest extends Scene {
       sprite.onMouseUpOut.listen((trigger, e) => print(["up out", e.localX, e.localY, e.worldX, e.worldY]));
       sprite.onClick.listen((trigger, e) => trigger.fill = Color.random());
       addChild(sprite);
+      
+      if(i == 4) {
+        sprite.pivotX = 0.5;
+        sprite.pivotY = 0.5;
+      }
     }
   }
 }

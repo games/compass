@@ -19,11 +19,11 @@ part 'src/display/displayobject.dart';
 part 'src/display/sprite.dart';
 part 'src/display/layer.dart';
 part 'src/display/scene.dart';
-part 'src/display/label.dart';
 
 part 'src/fill/fill.dart';
 part 'src/fill/color.dart';
 part 'src/fill/image.dart';
+part 'src/fill/text.dart';
 part 'src/fill/textureatlas.dart';
 part 'src/fill/textureatlasframe.dart';
 
