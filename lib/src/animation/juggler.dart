@@ -33,7 +33,7 @@ class Juggler implements Animatable {
     for(; i < numObjects; i++){
       var animatable = _animatables[i];
       if(animatable != null){
-        if(currentIndex != 0){
+        if(currentIndex != i){
           _animatables[currentIndex] = animatable;
           _animatables[i] = null;
         }
