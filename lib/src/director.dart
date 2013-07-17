@@ -57,6 +57,7 @@ class Director implements Dispose {
     
     _scene.advanceTime(interval);
     juggler.advanceTime(interval);
+    _keyboard.advanceTime(interval);
     
     _renderer.nextFrame();
     _scene.render(_renderer);
@@ -72,7 +73,7 @@ class Director implements Dispose {
     // TODO implement this method
   }
   
-  get keyboard => _keyboard;
+  Keyboard get keyboard => _keyboard;
   get scene => _scene;
   get stats => _stats;
 }

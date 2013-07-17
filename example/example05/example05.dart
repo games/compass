@@ -18,27 +18,41 @@ class SimpleTest extends Scene {
       sprite = new Sprite();
       sprite.fill = Color.parse(Color.Blue);
       sprite.x = 110.0;
-      sprite.y = 20.0;
+      sprite.y = 120.0;
       sprite.width = 100.0;
       sprite.height = 100.0;
       addChild(sprite);
+      
+      director.keyboard.define("rotate", [KeyCode.SHIFT, KeyCode.R]);
   }
   
   advanceTime(num time) {
-    if(director.keyboard.isDown(KeyCode.LEFT)) {
+    if(director.keyboard.pressed(KeyCode.LEFT)) {
       sprite.x -= speed;
-    }else if(director.keyboard.isDown(KeyCode.RIGHT)) {
+    }else if(director.keyboard.pressed(KeyCode.RIGHT)) {
       sprite.x += speed;
     }
-    if(director.keyboard.isDown(KeyCode.UP)) {
+    if(director.keyboard.pressed(KeyCode.UP)) {
       sprite.y -= speed;
-    }else if(director.keyboard.isDown(KeyCode.DOWN)) {
+    }else if(director.keyboard.pressed(KeyCode.DOWN)) {
       sprite.y += speed;
     }
-    if(director.keyboard.anyKeyDown)
+    
+    if(director.keyboard.held(KeyCode.LEFT)) {
       sprite.fill = Color.parse(Color.Red);
-    else
+    }else if(director.keyboard.held(KeyCode.RIGHT)) {
+      sprite.fill = Color.parse(Color.Yellow);
+    }else if(director.keyboard.held(KeyCode.UP)) {
+      sprite.fill = Color.parse(Color.Green);
+    }else if(director.keyboard.held(KeyCode.DOWN)) {
+      sprite.fill = Color.parse(Color.BurlyWood);
+    }else{
       sprite.fill = Color.parse(Color.Blue);
+    }
+    
+    if(director.keyboard.heldByName("rotate")) {
+      sprite.rotation += 1.0;
+    }
   }
 }
 
