@@ -83,56 +83,58 @@ class DisplayObject implements Dispose {
   get x => _x;
   set x(double val) {
     _x = val;
-    _dirty = true;
+    invalidate();
   }
   
   get y => _y;
   set y(double val) {
     _y = val;
-    _dirty = true;
+    invalidate();
   }
   
   get width => _width;
   set width(double val) {
     _width = val;
-    _dirty = true;
+    invalidate();
   }
   
   get height => _height;
   set height(double val) {
     _height = val;
-    _dirty = true;
+    invalidate();
   }
   
   get pivotX => _pivotX;
   set pivotX(double val) {
     _pivotX = val;
-    _dirty = true;
+    invalidate();
   }
   
   get pivotY => _pivotY;
   set pivotY(double val) {
     _pivotY = val;
-    _dirty = true;
+    invalidate();
   }
   
   get scaleX => _scaleX;
   set scaleX(double val) {
     _scaleX = val;
-    _dirty = true;
+    invalidate();
   }
   
   get scaleY => _scaleY;
   set scaleY(double val) {
     _scaleY = val;
-    _dirty = true;
+    invalidate();
   }
   
   get rotation => _rotation;
   set rotation(double val) {
     _rotation = val % PI2;
-    _dirty = true;
+    invalidate();
   }
+
+  invalidate() => _dirty = true;
 }
 
 

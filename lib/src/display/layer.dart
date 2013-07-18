@@ -1,13 +1,8 @@
 part of compass;
 
 class Layer extends InteractiveObject {
-  List<DisplayObject> children;
-  bool interactiveChildren;
-  
-  Layer() {
-    children = [];
-    interactiveChildren = true;
-  }
+  List<DisplayObject> children = [];
+  bool interactiveChildren = true;
   
   addChild(DisplayObject node) {
     node.removeFromParent();
@@ -28,5 +23,10 @@ class Layer extends InteractiveObject {
   
   render(Renderer renderer) {
     children.forEach((child) => child.render(renderer));
+  }
+  
+  invalidate() {
+    super.invalidate();
+    children.forEach((child) => child.invalidate());
   }
 }
