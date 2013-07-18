@@ -116,7 +116,7 @@ class RenderBatch implements Dispose {
         colorIndex += 3;
       }
     } else {
-      _fill.updateBuffer(index, uvs);
+      sprite.fill.updateBuffer(index, uvs);
     }
   }
   
