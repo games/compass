@@ -16,6 +16,7 @@ void main() {
 
 class SimpleTest extends Scene {
   final num Cell = 30.0, Speed = 5.0, JumpSpeed = 15.0;
+  Layer _world;
   Hero _hero;
   List<Sprite> _platforms = [];
   
@@ -30,13 +31,13 @@ class SimpleTest extends Scene {
   
   _initLevel() {
     var tiles = resources.getTextureAtlas("tiles");
+    _world = new Layer();
+    addChild(_world);
     for(var i = 0; i < level.length; i++) {
       var cell = level[i];
       _makeTile(cell, tiles, (i % 44).toInt() * Cell, (i / 44).toInt() * Cell);
     }
-//    var walker = resources.getTextureAtlas("p3_walk");
-//    _hero.view = new SpriteSheet(walker.getImages("walk_"), 12);
-    addChild(_hero.view);
+    _world.addChild(_hero.view);
     director.juggler.add(_hero.view);
   }
   
@@ -72,7 +73,7 @@ class SimpleTest extends Scene {
       sprite.x = x;
       sprite.y = y;
       sprite.width = sprite.height = Cell;
-      addChild(sprite);
+      _world.addChild(sprite);
     }
   }
   
@@ -118,6 +119,12 @@ class SimpleTest extends Scene {
     }
     
     _hero.update();
+    
+    _updateWorld();
+  }
+  
+  _updateWorld() {
+    _world.x = _hero.view.x - director.width / 2;
   }
 }
 
@@ -141,13 +148,6 @@ class Hero {
 
 
 final List<int> level = [
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,7,8,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,1,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,5,0,0,6,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,7,7,0,0,0,0,0,0,0,0,0,0,9,1,1,1,10,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,6,7,7,7,7,7,5,7,7,7,7,6,0,0,0,0,0,0,7,7,7,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,9,1,1,1,1,1,1,1,1,10,0,0,0,0,0,0,0,9,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
