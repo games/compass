@@ -1,7 +1,8 @@
 import 'dart:html' as html;
 import 'dart:math' as math;
-import 'package:compass/compass.dart';
+import '../../lib/compass.dart';
 
+ResourceManager resources;
 
 void main() {
   html.CanvasElement canvas = html.query('#container');
@@ -14,32 +15,41 @@ void main() {
 }
 
 class SimpleTest extends Scene {
-  final num Cell = 20.0, Speed = 5.0, JumpSpeed = 15.0;
+  final num Cell = 30.0, Speed = 5.0, JumpSpeed = 15.0;
   Hero _hero;
   List<Sprite> _platforms = [];
   
   enter() {
-     _initLevel();
+    resources = new ResourceManager();
+    resources.addTextureAtlas("tiles", "tiles.json");
+    resources.addTextureAtlas("p3_walk", "p3_walk.json");
+    resources.load().then((_) {
+      _initLevel();
+    });
   }
   
   _initLevel() {
+    var tiles = resources.getTextureAtlas("tiles");
     for(var i = 0; i < level.length; i++) {
       var cell = level[i];
-      _makeTile(cell,  (i % 44).toInt() * Cell, (i / 44).toInt() * Cell);
+      _makeTile(cell, tiles, (i % 44).toInt() * Cell, (i / 44).toInt() * Cell);
     }
+//    var walker = resources.getTextureAtlas("p3_walk");
+//    _hero.view = new SpriteSheet(walker.getImages("walk_"), 12);
     addChild(_hero.view);
+    director.juggler.add(_hero.view);
   }
   
-  _makeTile(cell, x, y) {
+  _makeTile(cell, atlas, x, y) {
     if(cell > 0) {
       var sprite = new Sprite();
       if(cell == 1) {
-        sprite.fill = Color.parse(Color.AliceBlue);
+        sprite.fill = atlas.getImage("grassMid");
         _platforms.add(sprite);
       } else if(cell == 99) {
-        sprite.fill = Color.parse(Color.Red);
         _hero = new Hero();
-        _hero.view = sprite;
+        var walker = resources.getTextureAtlas("p3_walk");
+        _hero.view = sprite = new SpriteSheet(walker.getImages("walk_"), 12);
       } else if(cell == 2) {
         sprite.fill = Color.parse(Color.LightSlateGray);
       } else if(cell == 4) {
@@ -52,6 +62,12 @@ class SimpleTest extends Scene {
         sprite.fill = Color.parse(Color.DarkTurquoise);
       } else if(cell == 8) {
         sprite.fill = Color.parse(Color.DarkOrchid);
+      } else if(cell == 9) {
+        sprite.fill = atlas.getImage("grassLeft");
+        _platforms.add(sprite);
+      } else if(cell == 10) {
+        sprite.fill = atlas.getImage("grassRight");
+        _platforms.add(sprite);
       }
       sprite.x = x;
       sprite.y = y;
@@ -61,6 +77,9 @@ class SimpleTest extends Scene {
   }
   
   advanceTime(num time) {
+    if(_hero == null)
+      return;
+    
     if(director.keyboard.held(html.KeyCode.LEFT)) {
       _hero.x = -Speed;
     } else if(director.keyboard.held(html.KeyCode.RIGHT)) {
@@ -103,7 +122,7 @@ class SimpleTest extends Scene {
 }
 
 class Hero {
-  Sprite view;
+  SpriteSheet view;
   num x = 0, y = 0;
   bool isJumping = false;
   
@@ -126,15 +145,15 @@ final List<int> level = [
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,7,8,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,1,1,1,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,5,0,0,6,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,7,7,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,7,7,0,0,0,0,0,0,0,0,0,0,9,1,1,1,10,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,6,7,7,7,7,7,5,7,7,7,7,6,0,0,0,0,0,0,7,7,7,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,9,1,1,1,1,1,1,1,1,10,0,0,0,0,0,0,0,9,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,4,7,7,7,99,7,7,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,7,7,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,9,1,1,1,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,1,1,1,10,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1

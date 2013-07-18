@@ -15,10 +15,10 @@ class Sprite extends InteractiveObject {
   }
   
   _handleImage(Image image) {
-//    if(_width == 0.0 && _height == 0.0){
+    if(_width == 0.0 && _height == 0.0){
       _width = image.frameWidth.toDouble();
       _height = image.frameHeight.toDouble();
-//    }
+    }
   }
   
   render(Renderer renderer) {
