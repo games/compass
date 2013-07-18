@@ -11,47 +11,68 @@ void main() {
 }
 
 class SimpleTest extends Scene {
-  Sprite sprite;
+  Layer layer;
   final num speed = 10;
   
   enter() {
-      sprite = new Sprite();
-      sprite.fill = Color.parse(Color.Blue);
-      sprite.x = 110.0;
-      sprite.y = 120.0;
+      layer = new Layer();
+      layer.x = 110.0;
+      layer.y = 120.0;
+      addChild(layer);
+      
+      var sprite = new Sprite();
+      sprite.fill = Color.parse(Color.Black);
+      sprite.x = 0.0;
+      sprite.y = 0.0;
       sprite.width = 100.0;
       sprite.height = 100.0;
-      addChild(sprite);
+      layer.addChild(sprite);
+      
+      sprite = new Sprite();
+      sprite.fill = Color.parse(Color.Blue);
+      sprite.x = 0.0;
+      sprite.y = 0.0;
+      sprite.width = 50.0;
+      sprite.height = 50.0;
+      layer.addChild(sprite);
+      
+      sprite = new Sprite();
+      sprite.fill = Color.parse(Color.Red);
+      sprite.x = 50.0;
+      sprite.y = 50.0;
+      sprite.width = 50.0;
+      sprite.height = 50.0;
+      layer.addChild(sprite);
       
       director.keyboard.define("rotate", [KeyCode.SHIFT, KeyCode.R]);
   }
   
   advanceTime(num time) {
     if(director.keyboard.pressed(KeyCode.LEFT)) {
-      sprite.x -= speed;
+      layer.x -= speed;
     }else if(director.keyboard.pressed(KeyCode.RIGHT)) {
-      sprite.x += speed;
+      layer.x += speed;
     }
     if(director.keyboard.pressed(KeyCode.UP)) {
-      sprite.y -= speed;
+      layer.y -= speed;
     }else if(director.keyboard.pressed(KeyCode.DOWN)) {
-      sprite.y += speed;
+      layer.y += speed;
     }
     
     if(director.keyboard.held(KeyCode.LEFT)) {
-      sprite.fill = Color.parse(Color.Red);
+      (layer.children[1] as Sprite).fill = Color.parse(Color.Red);
     }else if(director.keyboard.held(KeyCode.RIGHT)) {
-      sprite.fill = Color.parse(Color.Yellow);
+      (layer.children[1] as Sprite).fill = Color.parse(Color.Yellow);
     }else if(director.keyboard.held(KeyCode.UP)) {
-      sprite.fill = Color.parse(Color.Green);
+      (layer.children[1] as Sprite).fill = Color.parse(Color.Green);
     }else if(director.keyboard.held(KeyCode.DOWN)) {
-      sprite.fill = Color.parse(Color.BurlyWood);
+      (layer.children[1] as Sprite).fill = Color.parse(Color.BurlyWood);
     }else{
-      sprite.fill = Color.parse(Color.Blue);
+      (layer.children[1] as Sprite).fill = Color.parse(Color.Blue);
     }
     
     if(director.keyboard.heldByName("rotate")) {
-      sprite.rotation += 1.0;
+      layer.rotation += 1.0;
     }
   }
 }

@@ -38,6 +38,8 @@ class SimpleTest extends Scene {
       _makeTile(cell, tiles, (i % 44).toInt() * Cell, (i / 44).toInt() * Cell);
     }
     _world.addChild(_hero.view);
+//    var walker = resources.getTextureAtlas("p3_walk");
+//    _hero.view = new SpriteSheet(walker.getImages("walk_"), 12);
     director.juggler.add(_hero.view);
   }
   
