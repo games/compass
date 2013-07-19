@@ -6,34 +6,29 @@ class TextureAtlasFrame {
   final TextureAtlas _textureAtlas;
   final String _name;
   bool _rotated;
-  int _frameX;
-  int _frameY;
-  int _frameWidth;
-  int _frameHeight;
+  Rectangle _frame;
+  Rectangle _spriteSourceSize;
+  Rectangle _sourceSize;
 
   TextureAtlasFrame.fromJson(TextureAtlas textureAtlas, String name, Map frame) :
     _textureAtlas = textureAtlas,
     _name = name,
-    _rotated = _ensureBool(frame["rotated"]){
-    if(frame.containsKey("frame")) {
-      _frameX = _ensureInt(frame["frame"]["x"]);
-      _frameY = _ensureInt(frame["frame"]["y"]);
-      _frameWidth = _ensureInt(frame["frame"]["w"]);
-      _frameHeight = _ensureInt(frame["frame"]["h"]);
-    }else{
-      _frameX = _ensureInt(frame["spriteSourceSize"]["x"]);
-      _frameY = _ensureInt(frame["spriteSourceSize"]["y"]);
-      _frameWidth = _ensureInt(frame["spriteSourceSize"]["w"]);
-      _frameHeight = _ensureInt(frame["spriteSourceSize"]["h"]);
-    }
+    _rotated = frame["rotated"]{
+    if(frame.containsKey("frame")) 
+      _frame = _readRectangle(frame["frame"]);
+    if(frame.containsKey("spriteSourceSize"))
+      _spriteSourceSize = _readRectangle(frame["spriteSourceSize"]);
+    if(frame.containsKey("sourceSize"))
+      _sourceSize = _readRectangle(frame["sourceSize"]);
   }
+  
+  _readRectangle(rect) => new Rectangle(rect["x"], rect["y"], rect["w"], rect["h"]);
 
   TextureAtlas get textureAtlas => _textureAtlas;
   String get name => _name;
   bool get rotated => _rotated;
   
-  int get frameX => _frameX;
-  int get frameY => _frameY;
-  int get frameWidth => _frameWidth;
-  int get frameHeight => _frameHeight;
+  Rectangle get frame => _frame;
+  Rectangle get spriteSourceSize => _spriteSourceSize;
+  Rectangle get sourceSize => _sourceSize;
 }

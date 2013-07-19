@@ -4,10 +4,9 @@ part of compass;
 class Image extends Fill {
   int _width;
   int _height;
-  int _frameX;
-  int _frameY;
-  int _frameWidth;
-  int _frameHeight;
+  
+  Rectangle _frame;
+  int _offsetX, _offsetY;
   
   html.ImageElement imageData;
   
@@ -19,10 +18,10 @@ class Image extends Fill {
     imageData = frame.textureAtlas._image.imageData;
     _width = imageData.naturalWidth;
     _height = imageData.naturalHeight;
-    _frameX = frame.frameX;
-    _frameY = frame.frameY;
-    _frameWidth = frame.frameWidth;
-    _frameHeight = frame.frameHeight;
+    
+    _offsetX = frame.spriteSourceSize.x;
+    _offsetY = frame.spriteSourceSize.y;
+    _frame = frame.frame;
   }
   
 //  Image.fromText(text, {font: "sans-serif", size: 12, color: "black", align: "start", baseline: "middle"}) {
@@ -45,10 +44,9 @@ class Image extends Fill {
     imageData = image;
     _width = image.naturalWidth;
     _height = image.naturalHeight;
-    _frameX = 0;
-    _frameY = 0;
-    _frameWidth = _width;
-    _frameHeight = _height;
+    _offsetX = 0;
+    _offsetY = 0;
+    _frame = new Rectangle(0, 0, _width, _height);
   }
   
   _powerOfTwo(val, [pow = 1]) {
@@ -73,28 +71,27 @@ class Image extends Fill {
   updateBuffer(pos, buffer) {
     final tw = _width;
     final th = _height;
-    final right = _frameX + _frameWidth;
-    final bottom = _frameY + _frameHeight;
+    final right = frame.x + frame.width;
+    final bottom = frame.y + frame.height;
     
-    buffer[pos + 0] = _frameX / tw;
-    buffer[pos + 1] = _frameY / th;
+    buffer[pos + 0] = frame.x / tw;
+    buffer[pos + 1] = frame.y / th;
     
     buffer[pos + 2] = right / tw;
-    buffer[pos + 3] = _frameY / th;
+    buffer[pos + 3] = frame.y / th;
     
     buffer[pos + 4] = right / tw;
     buffer[pos + 5] = bottom / th;
     
-    buffer[pos + 6] = _frameX / tw;
+    buffer[pos + 6] = frame.x / tw;
     buffer[pos + 7] = bottom / th;
   }
   
-  int get frameX => _frameX;
-  int get frameY => _frameY;
-  int get frameWidth => _frameWidth;
-  int get frameHeight => _frameHeight;
   int get width => _width;
   int get height => _height;
+  int get offsetX => _offsetX;
+  int get offsetY => _offsetY;
+  Rectangle get frame => _frame;
   
   static Future<Image> load(String url) {
     Completer<Image> completer = new Completer<Image>();
