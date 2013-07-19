@@ -52,11 +52,13 @@ class WebGLRenderer extends Renderer {
   }
   
   render(Sprite sprite) {
-    sprite.fill.updateTexture(this);
-    if(_batchs[_currentBatchIndex].isStateChanged(sprite)){
-      finishBatch();
+    if(sprite.visible) {
+      sprite.fill.updateTexture(this);
+      if(_batchs[_currentBatchIndex].isStateChanged(sprite)){
+        finishBatch();
+      }
+      _batchs[_currentBatchIndex].add(sprite);
     }
-    _batchs[_currentBatchIndex].add(sprite);
   }
   
   findTexture(key) => _texturesCache[key];

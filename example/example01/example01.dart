@@ -25,7 +25,9 @@ class SimpleTest extends Scene {
       sprite.onMouseDown.listen((trigger, e) => print(["down", e.localX, e.localY, e.worldX, e.worldY]));
       sprite.onMouseUp.listen((trigger, e) => print(["up", e.localX, e.localY, e.worldX, e.worldY]));
       sprite.onMouseUpOut.listen((trigger, e) => print(["up out", e.localX, e.localY, e.worldX, e.worldY]));
-      sprite.onClick.listen((trigger, e) => trigger.fill = Color.random());
+      sprite.onClick.listen((trigger, e) {
+        trigger.visible = !trigger.visible;
+      });
       addChild(sprite);
       
       if(i == 4) {
