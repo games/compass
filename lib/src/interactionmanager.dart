@@ -66,6 +66,8 @@ class InteractionManager {
 
   _handleHitTest(InteractiveObject object, html.MouseEvent e, Function getDispatcher, 
                  {Function beforDispatchHandler, Function afterDispatchHandler}) {
+    if(!object.visible)
+      return;
     if(object.interactive) {
       final EventDispatcher dispatcher = getDispatcher(object);
       final transform = object.worldTransform;

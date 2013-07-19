@@ -22,7 +22,8 @@ class Layer extends InteractiveObject {
   }
   
   render(Renderer renderer) {
-    children.forEach((child) => child.render(renderer));
+    if(visible)
+      children.forEach((child) => child.render(renderer));
   }
   
   invalidate() {
