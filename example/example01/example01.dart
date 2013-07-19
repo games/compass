@@ -36,7 +36,7 @@ class SimpleTest extends Scene {
       }
     }
     
-    onMouseMove.listen((trigger, e) => print(["move", e.localX, e.localY, e.worldX, e.worldY]));
-    onClick.listen((trigger, e) => children.forEach((c) => c.visible = true));
+//    onMouseMove.listen((trigger, e) => print(["move", e.localX, e.localY, e.worldX, e.worldY]));
+//    onClick.listen((trigger, e) => children.forEach((c) => c.visible = true));
   }
 }
