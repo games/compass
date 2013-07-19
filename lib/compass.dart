@@ -16,7 +16,9 @@ part 'src/geom/rectangle.dart';
 part 'src/geom/vector.dart';
 
 part 'src/display/displayobject.dart';
+part 'src/display/interactiveobject.dart';
 part 'src/display/sprite.dart';
+part 'src/display/spritesheet.dart';
 part 'src/display/layer.dart';
 part 'src/display/scene.dart';
 
