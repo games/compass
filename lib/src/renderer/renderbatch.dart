@@ -93,6 +93,12 @@ class RenderBatch implements Dispose {
     tx = worldTransform[2];
     ty = worldTransform[5];
     
+    //TODO : have a bug if the sprite be scaled.
+    if(sprite.fill is Image) {
+      tx += sprite.fill.offsetX;
+      ty += sprite.fill.offsetY;
+    }
+    
     verticies[index + 0 ] = (a * w1 + c * h1 + tx) * 2 / director.width - 1.0; 
     verticies[index + 1 ] = -(d * h1 + b * w1 + ty) * 2 / director.height + 1;
     
