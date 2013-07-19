@@ -128,6 +128,18 @@ class DisplayObject implements Dispose {
     invalidate();
   }
   
+//  get skewX => _skewX;
+//  set skewX(double val) {
+//    _skewX = val;
+//    invalidate();
+//  }
+//  
+//  get skewY => _skewY;
+//  set skewY(double val) {
+//    _skewY = val;
+//    invalidate();
+//  }
+  
   get rotation => _rotation;
   set rotation(double val) {
     _rotation = val % PI2;
