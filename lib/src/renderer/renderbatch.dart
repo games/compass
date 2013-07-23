@@ -75,7 +75,10 @@ class RenderBatch implements Dispose {
       _replaceRange(index, 8, _translationBuffer(sprite), translations);
       _replaceRange(index, 8, _rotationBuffer(sprite), rotations);
       _replaceRange(index, 8, _scaleBuffer(sprite), scales);
-      _replaceRange(i * 16, 16, _colorBuffer(sprite), colors);
+      if(_fill is Color)
+        _replaceRange(i * 16, 16, _colorBuffer(sprite), colors);
+      else
+        sprite.fill.updateBuffer(index, uvs);
     }
   }
   
@@ -109,8 +112,8 @@ class RenderBatch implements Dispose {
   
   _colorBuffer(sprite) {
     var red = sprite.fill.red / 256;
-    var green = sprite.fill.red / 256;
-    var blue = sprite.fill.red / 256;
+    var green = sprite.fill.green / 256;
+    var blue = sprite.fill.blue / 256;
     var alpha = sprite.fill.alpha;
     var result = new List<double>(16);
     for(var i = 0; i < 16; i += 4) {
@@ -197,7 +200,7 @@ class RenderBatch implements Dispose {
       gl.vertexAttribPointer(program.textureCoordAttribute, 2, webgl.FLOAT, false, 0, 0);
       gl.activeTexture(webgl.TEXTURE0);
       gl.bindTexture(webgl.TEXTURE_2D, _fill.findTexture(renderer));
-      gl.uniform2f(program.samplerUniform, director.width, director.height);
+      gl.uniform1i(program.samplerUniform, 0);
     }
     
     gl.bindBuffer(webgl.ARRAY_BUFFER, translationBuffer);

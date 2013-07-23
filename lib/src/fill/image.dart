@@ -69,22 +69,22 @@ class Image extends Fill {
   findTexture(renderer) => renderer.findTexture(imageData);
 
   updateBuffer(pos, buffer) {
-    final tw = _width;
-    final th = _height;
-    final right = frame.x + frame.width;
-    final bottom = frame.y + frame.height;
+    final x0 = frame.x / _width;
+    final y0 = frame.y / _height;
+    final x1 = (frame.x + frame.width) / _width;
+    final y1 = (frame.y + frame.height) / _height;
     
-    buffer[pos + 0] = frame.x / tw;
-    buffer[pos + 1] = frame.y / th;
+    buffer[pos + 0] = x0;
+    buffer[pos + 1] = y1;
     
-    buffer[pos + 2] = right / tw;
-    buffer[pos + 3] = frame.y / th;
+    buffer[pos + 2] = x1;
+    buffer[pos + 3] = y1;
     
-    buffer[pos + 4] = right / tw;
-    buffer[pos + 5] = bottom / th;
+    buffer[pos + 4] = x1;
+    buffer[pos + 5] = y0;
     
-    buffer[pos + 6] = frame.x / tw;
-    buffer[pos + 7] = bottom / th;
+    buffer[pos + 6] = x0;
+    buffer[pos + 7] = y0;
   }
   
   int get width => _width;

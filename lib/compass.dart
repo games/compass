@@ -93,16 +93,28 @@ void main(void) {
 
 
 
-const VERTEX_SHADER_TEXTURE =  """
-attribute vec2 aVertexPosition;
-attribute vec2 aTextureCoord;
-
-varying vec2 vTextureCoord;
-
-void main(void) {
-    gl_Position = vec4(aVertexPosition, 1.0, 1.0);
+const VERTEX_SHADER_TEXTURE = """
+  attribute vec2 aVertexPosition;
+  attribute vec2 aTranslation;
+  attribute vec2 aRotation;
+  attribute vec2 aScale;
+  attribute vec2 aTextureCoord;
+  uniform vec2 aResolution;
+  varying vec2 vTextureCoord;
+  
+  void main(void) {
+    vec2 scaledPosition = aVertexPosition * aScale;
+    vec2 rotatedPosition = vec2(
+      scaledPosition.x * aRotation.y + scaledPosition.y * aRotation.x,
+      scaledPosition.y * aRotation.y - scaledPosition.x * aRotation.x
+    );
+    vec2 position = rotatedPosition + aTranslation;
+    vec2 zeroToOne = position / aResolution;
+    vec2 zeroToTwo = zeroToOne * 2.0;
+    vec2 clipSpace = zeroToTwo - 1.0;
+    gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
     vTextureCoord = aTextureCoord;
-}
+  }
 """;
 
 const FRAGMENT_SHADER_TEXTURE  = """
