@@ -109,8 +109,9 @@ class WebGLRenderer extends Renderer {
 
 class ShaderProgram {
   webgl.Program program;
-  int vertexPositionAttribute, textureCoordAttribute, colorAttribute;
-  webgl.UniformLocation samplerUniform;
+  int positionAttribute, textureCoordAttribute, colorAttribute;
+  int translationAttri, rotationAttri, scaleAttri;
+  webgl.UniformLocation samplerUniform, resolutionUniform;
   
   ShaderProgram(String vertextShaderSource, String fragmentShaderSource, webgl.RenderingContext gl) {
     webgl.Shader vertexShader = gl.createShader(webgl.VERTEX_SHADER);
@@ -135,8 +136,21 @@ class ShaderProgram {
       throw "Could not initialise shaders.";
     }
 
-    vertexPositionAttribute = gl.getAttribLocation(program, "aVertexPosition");
-    gl.enableVertexAttribArray(vertexPositionAttribute);
+    positionAttribute = gl.getAttribLocation(program, "aVertexPosition");
+    if(positionAttribute >= 0)
+      gl.enableVertexAttribArray(positionAttribute);
+
+    translationAttri = gl.getAttribLocation(program, "aTranslation");
+    if(translationAttri >= 0)
+      gl.enableVertexAttribArray(translationAttri);
+
+    rotationAttri = gl.getAttribLocation(program, "aRotation");
+    if(rotationAttri >= 0)
+      gl.enableVertexAttribArray(rotationAttri);
+
+    scaleAttri = gl.getAttribLocation(program, "aScale");
+    if(scaleAttri >= 0)
+      gl.enableVertexAttribArray(scaleAttri);
     
     colorAttribute = gl.getAttribLocation(program, "aColor");
     if(colorAttribute >= 0)
@@ -147,5 +161,6 @@ class ShaderProgram {
       gl.enableVertexAttribArray(textureCoordAttribute);
     
     samplerUniform = gl.getUniformLocation(program, "uSampler");
+    resolutionUniform = gl.getUniformLocation(program, "aResolution");
   }
 }

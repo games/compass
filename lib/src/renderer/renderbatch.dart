@@ -7,7 +7,9 @@ class RenderBatch implements Dispose {
   Fill _fill;
   Matrix3 _modelViewMatrix;
   webgl.Buffer vertexBuffer, indexBuffer, uvBuffer, colorBuffer;
+  webgl.Buffer translationBuffer, rotationBuffer, scaleBuffer;
   Float32List verticies, uvs, colors;
+  Float32List translations, rotations, scales;
   Uint16List indices;
   WebGLRenderer renderer;
   bool dirty;
@@ -28,6 +30,10 @@ class RenderBatch implements Dispose {
     uvBuffer = gl.createBuffer();
     colorBuffer = gl.createBuffer();
     indexBuffer = gl.createBuffer();
+    
+    translationBuffer = gl.createBuffer();
+    rotationBuffer = gl.createBuffer();
+    scaleBuffer = gl.createBuffer();
   }
   
   reset() {
@@ -62,69 +68,63 @@ class RenderBatch implements Dispose {
       growBuffer();
     }
     
-    for(var i = 0; i < _numSprites; i++){
-      updateBuffer(i, _sprites[i]);
+    for(var i = 0; i < _numSprites; i++) {
+      var sprite = _sprites[i];
+      var index = i * 8;
+      _replaceRange(index, 8, _positionBuffer(sprite), verticies);
+      _replaceRange(index, 8, _translationBuffer(sprite), translations);
+      _replaceRange(index, 8, _rotationBuffer(sprite), rotations);
+      _replaceRange(index, 8, _scaleBuffer(sprite), scales);
+      _replaceRange(i * 16, 16, _colorBuffer(sprite), colors);
     }
   }
   
-  updateBuffer(int no, Sprite sprite) {
-    var worldTransform, width, height, aX, aY, w0, w1, h0, h1, index, index2, index3;
-    var a, b, c, d, tx, ty;
-    
-    index = no * 8;
-    
-    width = sprite.width;
-    height = sprite.height;
-    
-    aX = sprite.pivotX;
-    aY = sprite.pivotY;
-    w0 = width * (1 - aX);
-    w1 = width * -aX;
-    
-    h0 = height * (1 - aY);
-    h1 = height * -aY;
-    
-    worldTransform = sprite.worldTransform;
-    
-    a = worldTransform[0];
-    b = worldTransform[3];
-    c = worldTransform[1];
-    d = worldTransform[4];
-    tx = worldTransform[2];
-    ty = worldTransform[5];
-    
-    //TODO : have a bug if the sprite be scaled.
-    if(sprite.fill is Image && sprite is SpriteSheet) {
-//      tx += (sprite.fill.offsetX * sprite.scaleX);
-//      ty += (sprite.fill.offsetY * sprite.scaleY);
-      print([sprite, sprite.scaleX, sprite.scaleY]);
-//      print([(sprite.fill.offsetX * sprite.scaleX), (sprite.fill.offsetY * sprite.scaleY)]);
+  _positionBuffer(sprite) {
+    var x1 = sprite.x;
+    var x2 = sprite.x + sprite.width;
+    var y1 = sprite.y;
+    var y2 = sprite.y + sprite.height;
+    return [x1, y2, x2, y2, x2, y1, x1, y1];
+  }
+  
+  _translationBuffer(sprite) {
+    return [sprite.x, sprite.y, sprite.x, sprite.y, sprite.x, sprite.y, sprite.x, sprite.y, sprite.x, sprite.y, sprite.x, sprite.y];
+  }
+  
+  _rotationBuffer(sprite) {
+    var radians = sprite.rotation * math.PI / 180;
+    var sn = math.sin(radians);
+    var cs = math.cos(radians);
+    return [sn, cs, sn, cs, sn, cs, sn, cs, sn, cs, sn, cs];
+  }
+  
+  _scaleBuffer(sprite) {
+    return [sprite.scaleX, sprite.scaleY, 
+            sprite.scaleX, sprite.scaleY, 
+            sprite.scaleX, sprite.scaleY, 
+            sprite.scaleX, sprite.scaleY, 
+            sprite.scaleX, sprite.scaleY, 
+            sprite.scaleX, sprite.scaleY];
+  }
+  
+  _colorBuffer(sprite) {
+    var red = sprite.fill.red / 256;
+    var green = sprite.fill.red / 256;
+    var blue = sprite.fill.red / 256;
+    var alpha = sprite.fill.alpha;
+    var result = new List<double>(16);
+    for(var i = 0; i < 16; i += 4) {
+      result[i] = red;
+      result[i + 1] = green;
+      result[i + 2] = blue;
+      result[i + 3] = alpha;
     }
-    
-    verticies[index + 0 ] = (a * w1 + c * h1 + tx) * 2 / director.width - 1.0; 
-    verticies[index + 1 ] = -(d * h1 + b * w1 + ty) * 2 / director.height + 1;
-    
-    verticies[index + 2 ] = (a * w0 + c * h1 + tx) * 2 / director.width - 1.0; 
-    verticies[index + 3 ] = -(d * h1 + b * w0 + ty) * 2 / director.height + 1.0; 
-    
-    verticies[index + 4 ] = (a * w0 + c * h0 + tx) * 2 / director.width - 1.0; 
-    verticies[index + 5 ] = -(d * h0 + b * w0 + ty) * 2 / director.height + 1.0; 
-    
-    verticies[index + 6] =  (a * w1 + c * h0 + tx) * 2 / director.width - 1.0; 
-    verticies[index + 7] =  -(d * h0 + b * w1 + ty) * 2 / director.height + 1.0; 
-    
-    if(sprite.fill is Color) {
-      var color = sprite.fill as Color;
-      var colorIndex = no * 16;
-      for(var i = 0; i < 4; i++){
-        colors[colorIndex + i] = color.red / 255.0;
-        colors[colorIndex + i + 1] = color.green / 255.0;
-        colors[colorIndex + i + 2] = color.blue / 255.0;
-        colors[colorIndex + i + 3] = color.alpha;
-        colorIndex += 3;
-      }
-    } else {
-      sprite.fill.updateBuffer(index, uvs);
+    return result;
+  }
+  
+  _replaceRange(start, length, source, target) {
+    for(var i = start, j = 0; j < length; i++, j++) {
+      target[i] = source[j];
     }
   }
   
@@ -133,6 +133,18 @@ class RenderBatch implements Dispose {
     verticies = new Float32List(_numSprites * 8);
     gl.bindBuffer(webgl.ARRAY_BUFFER, vertexBuffer);
     gl.bufferDataTyped(webgl.ARRAY_BUFFER, verticies, webgl.DYNAMIC_DRAW);
+    
+    translations = new Float32List(_numSprites * 8);
+    gl.bindBuffer(webgl.ARRAY_BUFFER, translationBuffer);
+    gl.bufferDataTyped(webgl.ARRAY_BUFFER, translations, webgl.DYNAMIC_DRAW);
+    
+    rotations = new Float32List(_numSprites * 8);
+    gl.bindBuffer(webgl.ARRAY_BUFFER, rotationBuffer);
+    gl.bufferDataTyped(webgl.ARRAY_BUFFER, rotations, webgl.DYNAMIC_DRAW);
+
+    scales = new Float32List(_numSprites * 8);
+    gl.bindBuffer(webgl.ARRAY_BUFFER, scaleBuffer);
+    gl.bufferDataTyped(webgl.ARRAY_BUFFER, scales, webgl.DYNAMIC_DRAW);
     
     if(_fill is Color){
       colors = new Float32List(_numSprites * 16);
@@ -185,12 +197,26 @@ class RenderBatch implements Dispose {
       gl.vertexAttribPointer(program.textureCoordAttribute, 2, webgl.FLOAT, false, 0, 0);
       gl.activeTexture(webgl.TEXTURE0);
       gl.bindTexture(webgl.TEXTURE_2D, _fill.findTexture(renderer));
-      gl.uniform1i(program.samplerUniform, 0);
+      gl.uniform2f(program.samplerUniform, director.width, director.height);
     }
-
+    
+    gl.bindBuffer(webgl.ARRAY_BUFFER, translationBuffer);
+    gl.bufferSubDataTyped(webgl.ARRAY_BUFFER, 0, translations);
+    gl.vertexAttribPointer(program.translationAttri, 2, webgl.FLOAT, false, 0, 0);
+ 
+    gl.bindBuffer(webgl.ARRAY_BUFFER, rotationBuffer);
+    gl.bufferSubDataTyped(webgl.ARRAY_BUFFER, 0, rotations);
+    gl.vertexAttribPointer(program.rotationAttri, 2, webgl.FLOAT, false, 0, 0);
+ 
+    gl.bindBuffer(webgl.ARRAY_BUFFER, scaleBuffer);
+    gl.bufferSubDataTyped(webgl.ARRAY_BUFFER, 0, scales);
+    gl.vertexAttribPointer(program.scaleAttri, 2, webgl.FLOAT, false, 0, 0);
+    
+    gl.uniform2f(program.resolutionUniform, director.width, director.height);
+    
     gl.bindBuffer(webgl.ARRAY_BUFFER, vertexBuffer);
     gl.bufferSubDataTyped(webgl.ARRAY_BUFFER, 0, verticies);
-    gl.vertexAttribPointer(program.vertexPositionAttribute, 2, webgl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(program.positionAttribute, 2, webgl.FLOAT, false, 0, 0);
     
     gl.bindBuffer(webgl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.drawElements(webgl.TRIANGLES, _numSprites * 6, webgl.UNSIGNED_SHORT, 0);
