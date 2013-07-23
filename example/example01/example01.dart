@@ -30,6 +30,11 @@ class SimpleTest extends Scene {
       });
       addChild(sprite);
       
+      if(i == 3) {
+        sprite.scaleX = 0.5;
+        sprite.scaleY = 0.5;
+      }
+      
       if(i == 4) {
         sprite.pivotX = 0.5;
         sprite.pivotY = 0.5;

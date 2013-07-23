@@ -25,8 +25,8 @@ class SimpleTest extends Scene {
     resources.addTextureAtlas("darksaber_run", "darksaber_run.json");
     resources.load().then((_) {
       addDarksaber();
-      addBird();
-      addWalker();
+//      addBird();
+//      addWalker();
     });
   }
   
@@ -35,7 +35,7 @@ class SimpleTest extends Scene {
     darksaber = new MyAnimate(atlas.getImages("darksaber_run"));
     darksaber.x = 0.0;
     darksaber.y = 0.0;
-//    darksaber.scaleX = darksaber.scaleY = 0.3;
+    darksaber.scaleX = darksaber.scaleY = 0.3;
     addChild(darksaber);
   }
   
@@ -62,6 +62,19 @@ class SimpleTest extends Scene {
       walker.update();
     if(bird != null) 
       bird.update();
+    
+    if(director.keyboard.pressed(KeyCode.UP)){
+      if(darksaber != null){
+        darksaber.scaleX += 0.1;
+        darksaber.scaleY += 0.1;
+      }
+    }
+    if(director.keyboard.pressed(KeyCode.DOWN)){
+      if(darksaber != null){
+        darksaber.scaleX -= 0.1;
+        darksaber.scaleY -= 0.1;
+      }
+    }
   }
 }
 
@@ -73,7 +86,7 @@ class MyAnimate extends Layer {
   MyAnimate(images) {
     bg = new Sprite();
     bg.fill = Color.random();
-//    addChild(bg);
+    addChild(bg);
     
     animate = new SpriteSheet(images);
     addChild(animate);

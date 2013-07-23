@@ -53,6 +53,9 @@ class DisplayObject implements Dispose {
       
       final Matrix3 parentTransform = parent != null ? parent.worldTransform : new Matrix3.identity();
       
+      
+      
+      
       _localTransform[0] = cr * _scaleX;
       _localTransform[1] = -sr * _scaleY;
       _localTransform[3] = sr * _scaleX;
