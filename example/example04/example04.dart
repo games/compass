@@ -21,19 +21,19 @@ class SimpleTest extends Scene {
     resources = new ResourceManager();
     resources.addImage("bunny", "bunny.png");
     resources.load().then((_) {
-      newChild(10000, true, resources.getImage("bunny"));
+      newChild(16500, true, resources.getImage("bunny"));
     });
   }
   
   advanceTime(num interval) {
     children.forEach((DisplayObject child) {
-      move(interval / 1000, child);
+//      move(interval / 1000, child);
       rotate(interval / 1000, child);
     });
   }
   
   rotate(num s, DisplayObject child) {
-    child.rotation += 0.1;
+    child.rotation += 10.0;
   }
   
   move(num s, child) {

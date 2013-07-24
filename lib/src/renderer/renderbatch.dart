@@ -82,17 +82,9 @@ class RenderBatch implements Dispose {
     }
   }
   
-  _positionBuffer(sprite) {
-    var x1 = sprite.x;
-    var x2 = sprite.x + sprite.width;
-    var y1 = sprite.y;
-    var y2 = sprite.y + sprite.height;
-    return [x1, y2, x2, y2, x2, y1, x1, y1];
-  }
+  _positionBuffer(sprite) => [0.0, sprite.height, sprite.width, sprite.height, sprite.width, 0.0, 0.0, 0.0];
   
-  _translationBuffer(sprite) {
-    return [sprite.x, sprite.y, sprite.x, sprite.y, sprite.x, sprite.y, sprite.x, sprite.y, sprite.x, sprite.y, sprite.x, sprite.y];
-  }
+  _translationBuffer(sprite) => [sprite.x, sprite.y, sprite.x, sprite.y, sprite.x, sprite.y, sprite.x, sprite.y, sprite.x, sprite.y, sprite.x, sprite.y];
   
   _rotationBuffer(sprite) {
     var radians = sprite.rotation * math.PI / 180;

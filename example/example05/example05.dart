@@ -43,6 +43,15 @@ class SimpleTest extends Scene {
       sprite.width = 50.0;
       sprite.height = 50.0;
       layer.addChild(sprite);
+
+      sprite = new Sprite();
+      sprite.fill = Color.parse(Color.Yellow);
+      sprite.x = 50.0;
+      sprite.y = 100.0;
+      sprite.width = 50.0;
+      sprite.height = 50.0;
+      sprite.rotation = 40.0;
+      layer.addChild(sprite);
       
       director.keyboard.define("rotate", [KeyCode.SHIFT, KeyCode.R]);
   }

@@ -145,7 +145,7 @@ class DisplayObject implements Dispose {
   
   get rotation => _rotation;
   set rotation(double val) {
-    _rotation = val % PI2;
+    _rotation = val;
     invalidate();
   }
 
