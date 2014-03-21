@@ -8,7 +8,7 @@ class TextureAtlas {
     Completer<TextureAtlas> completer = new Completer<TextureAtlas>();
     TextureAtlas textureAtlas = new TextureAtlas();
     html.HttpRequest.getString(url).then((textureAtlasJson) {
-      var data = json.parse(textureAtlasJson);
+      var data = JSON.decode(textureAtlasJson);
       var frames = data["frames"];
       var meta = data["meta"];
       var imageUrl = _replaceFilename(url, meta["image"]);
